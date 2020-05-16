@@ -307,8 +307,23 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  // throw new Error('Not implemented');
+  const myCcn = String(ccn).split('').reverse().map((el) => Number(el));
+  let i = 0;
+  let miniSum;
+  const check = myCcn.reduce((sum, digit) => {
+    if (i % 2 === 0) {
+      miniSum = digit;
+    } else {
+      miniSum = Math.min(digit * 2, String((digit * 2))
+        .split('')
+        .reduce((s, a) => Number(a) + s, 0));
+    }
+    i += 1;
+    return sum + miniSum;
+  }, 0);
+  return (check % 10 === 0);
 }
 
 /**
@@ -420,8 +435,21 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  // throw new Error('Not implemented');
+  const arr = pathes;
+  for (let i = 1; i < arr.length; i += 1) {
+    const prev = arr[i - 1];
+    const curr = arr[i];
+    let count = 0;
+    let result = '';
+    while (prev[count] === curr[count] && result.length < prev.length) {
+      result += curr[count];
+      count += 1;
+    }
+    arr[i] = result;
+  }
+  return arr[arr.length - 1].replace(/\w+$/, '');
 }
 
 
@@ -443,8 +471,24 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  // throw new Error('Not implemented');
+  const result = [];
+
+  for (let i = 0; i < m1.length; i += 1) {
+    const row = [];
+    for (let j = 0; j < m2[0].length; j += 1) {
+      const sum = [];
+      for (let k = 0; k < m2.length; k += 1) {
+        const product = m1[i][k] * m2[k][j];
+        sum.push(product);
+      }
+      const sumOfRows = sum.reduce((prev, current) => prev + current, 0);
+      row.push(sumOfRows);
+    }
+    result.push(row);
+  }
+  return result;
 }
 
 
@@ -478,8 +522,30 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  // throw new Error('Not implemented');
+  for (let i = 0; i < 3; i += 1) {
+    if (position[0][i] === position[1][i]
+      && position[0][i] === position[2][i]
+      && position[0][i] !== undefined) {
+      return position[0][i];
+    }
+    if (position[i][0] === position[i][1]
+      && position[i][0] === position[i][2]
+      && position[i][0] !== undefined) {
+      return position[i][0];
+    }
+  }
+  if (position[0][0] === position[1][1]
+    && position[0][0] === position[2][2]
+    && position[1][1] !== undefined) {
+    return position[0][0];
+  }
+  if (position[0][2] === position[1][1]
+    && position[0][2] === position[2][0]) {
+    return position[0][2];
+  }
+  return undefined;
 }
 
 
